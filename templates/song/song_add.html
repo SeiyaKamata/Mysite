@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+        <tr>
+            <th>曲名</th>
+            <td><input type="text" id="name" name="name" class="form-control"></td>
+        </tr>
+        <tr>
+            <th>ジャンル</th>
+            <td>
+                <select class="form-select" id="genre" name="genre">
+                    {% for g in genres %}
+                    <option value="{{ g.id }}">{{ g }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>アーティスト</th>
+            <td>
+                <select class="form-select" id="artists" name="artist">
+                    {% for a in artists %}
+                    <option value="{{ a.id }}">{{ a }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>公式サイト</th>
+            <td>
+                <input type="text" id="url" name="url" class="form-control">
+            </td>
+            </td>
+        </tr>
+    </table>
+
+    <div class="row justify-content-end mb-3">
+        <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+</form>
+
+<template id="anime-row-temp">
+    <tr id="anime-row">
+        <th>関連アニメ</th>
+        <td>
+            <select class="form-select" id="anime" name="anime">
+                {% for anime in animes %}
+                {% if anime.id == selected_anime %}
+                <option value="{{ anime.id }}" selected>{{ anime }}</option>
+                {% else %}
+                <option value="{{ anime.id }}">{{ anime }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </td>
+        </td>
+    </tr>
+</template>
+{% endblock %}
+
+{% block script %}
+<script>
+    toggleInput()
+    $('#genre').change(function () {
+        toggleInput()
+    });
+
+    function toggleInput() {
+        var genreValue = $("#genre").val();
+
+        var animeElement = $("#anime-row")
+
+        if (genreValue === "1") {
+            var template = document.getElementById('anime-row-temp');
+            console.log(template)
+            var tr = template.content.cloneNode(true);
+            $(".table > tbody").append(tr);
+            console.log(false);
+        } else {
+            $("#anime-row").remove();
+            console.log(true);
+        }
+    }
+</script>
+{% endblock %}

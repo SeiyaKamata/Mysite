@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/anime_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<input id="anime-id" type="text" value="{{anime.id}}" hidden>
+<img src="{{anime.image}}" class="img-fluid" alt="...">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">タイトル</th>
+            <td>{{anime.name}}</td>
+        </tr>
+        <tr>
+            <th scope="row">ジャンル</th>
+            <td>
+                {% for g in genre %}
+                <a href="/anime?genre={{g.id}}">{{g}}</a>
+                <span>, </span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">放送シーズン</th>
+            <td>
+                {% for p in period %}
+                <a href="/anime?period={{p.id}}">{{p}}</a>
+                <span>, </span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">制作会社</th>
+            <td>{{anime.created_by}}</td>
+        </tr>
+        <tr>
+            <th scope="row">公式サイト</th>
+            <td>
+                <a href="{{anime.official_page}}" target="_blank" rel="noopener">{{anime.official_page}}</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<section class="mb-5">
+    <h3 class="heading">聖地</h3>
+
+    <div class="row row-cols-6 g-4">
+        {% for p in places %}
+        <div class="col">
+            <div class="card border-primary">
+                <div class="card-body text-center text-primary">
+                    {{p.place}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col">
+            <a href="/japan/add?anime_id={{anime.id}}">
+                <div class="card border-primary japan-card">
+                    <div class="card-body text-center">
+                        追加
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<section class="mb-5">
+    <h3 class="heading">アニソン</h3>
+
+    <div class="row row-cols-6 g-4">
+        {% for s in songs %}
+        <div class="col">
+            <div class="card border-primary">
+                <div class="card-body text-center text-primary">
+                    {{s.song}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col">
+            <a href="/song/add?anime_id={{anime.id}}">
+                <div class="card border-primary song-card">
+                    <div class="card-body text-center">
+                        追加
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h3 class="heading">アニメ</h3>
+
+    <div class="row row-cols-6 g-4">
+        {% for v in videos %}
+        <div class="col">
+            <a href="/video/watch?anime_id={{anime.id}}&episode={{v.episode}}">
+                <div class="card border-primary anime-card">
+                    <div class="card-body text-center">
+                        {{v.episode}}話
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        <div class="col">
+            <a href="/video?anime_id={{anime.id}}">
+                <div class="card border-primary anime-card">
+                    <div class="card-body text-center">
+                        追加
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h3 class="heading">コメント</h3>
+
+    <textarea class="form-control mb-3" id="commentInput" rows="3"></textarea>
+    <div class="d-flex justify-content-end mb-3 mb-5">
+        <button id="comment-btn" type="button" class="btn btn-primary">コメントする</button>
+    </div>
+
+    <div id="commnet-list">
+        {% for c in comments %}
+        <div class="card mb-3">
+            <div class="card-body">
+                {{c.comment}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const anime_id = $('#anime-id').val()
+
+    $('#comment-btn').click(function () {
+        let comment = $('#commentInput').val()
+
+        $.ajax({
+            url: '/anime/add_comment_api/',
+            method: 'POST',
+            data: { anime: anime_id, comment: comment },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            },
+            success: function (data) {
+                console.log(data)
+                $('#commnet-list').append(
+                    `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            ${data['new_comment']}
+                        </div>
+                    </div>
+                    `
+                )
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+
+    });
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

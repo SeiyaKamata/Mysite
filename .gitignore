@@ -1,0 +1,24 @@
+# Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pot
+*.pyc
+.env
+
+db.sqlite3
+
+venv/
+env/
+
+.vscode/
+.idea/
+/media/
+
+*.DS_Store
+
+**/migrations/

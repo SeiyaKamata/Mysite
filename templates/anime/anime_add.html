@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+        <tr>
+            <th>アニメ名</th>
+            <td><input type="text" id="name" name="name" class="form-control"></td>
+        </tr>
+        <tr>
+            <th>ジャンル</th>
+            <td>
+                <select class="form-select" id="genre" name="genre" multiple>
+                    {% for g in genre %}
+                    <option value="{{ g.id }}">{{ g }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>放送時期</th>
+            <td>
+                <select class="form-select" id="period" name="period" multiple>
+                    {% for p in period %}
+                    <option value="{{ p.id }}">{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>画像</th>
+            <td>
+                <input type="file" id="image" name="image" class="form-control">
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <th>公式サイト</th>
+            <td>
+                <input type="text" id="official_page" name="official_page" class="form-control">
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <th>制作会社</th>
+            <td>
+                <select class="form-select" id="created_by" name="created_by">
+                    {% for c in company %}
+                    <option value="{{ c.id }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <div class="row justify-content-end mb-3">
+        <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+</form>
+{% endblock %}

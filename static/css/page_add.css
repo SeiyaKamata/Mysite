@@ -1,0 +1,8 @@
+#page-add-table tr td#add-block-button:hover {
+    background-color: #eee;
+}
+
+
+#page-add-table th {
+    vertical-align: middle;
+}

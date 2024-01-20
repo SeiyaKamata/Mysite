@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/video_download.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row mb-5 justify-content-center">
+    <div class="col-8">
+        <input type="text" id="input-video-id" class="form-control">
+    </div>
+    <div class="col-auto">
+        <button type="button" id="video-id-button" class="btn btn-primary">追加</button>
+    </div>
+</div>
+
+
+<form method="post" action="{% url 'video:video_download' %}">
+    <select class="form-select mb-3" id="anime" name="anime">
+        {% for anime in animes %}
+        {% if anime.id == selected_anime %}
+        <option value="{{ anime.id }}" selected>{{ anime }}</option>
+        {% else %}
+        <option value="{{ anime.id }}">{{ anime }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+
+    {% csrf_token %}
+    <table class="table" id="video-donload-table">
+        <thead>
+            <tr>
+                <th>VIDEO ID</th>
+                <th>サムネイル</th>
+                <th>エピソード</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+
+</form>
+{% endblock %}
+
+{% block script %}
+
+<script>
+    $('#video-id-button').click(function () {
+        const videoID = $('#input-video-id').val()
+        append_tr(videoID);
+        $('#input-video-id').val('')
+    });
+
+    $('#input-video-id').keydown(function(event) {
+        if (event.key === 'Enter') {
+            const videoID = $('#input-video-id').val()
+            append_tr(videoID);
+            $('#input-video-id').val('');
+        }
+    })
+
+    const append_tr = (videoID) => {
+        const len = $('#video-donload-table > tbody').children().length + 1;
+        const anime = `video-${len}`;
+        const episode = `video-${len}-episode`;
+
+        var tr = `
+            <tr>
+                <td class="col-3">
+                    <input type="text" id=${anime} name=${anime} class="form-control" value=${videoID} readOnly>
+                </td>
+                <td>
+                    <img src="" class="img-fluid" alt="...">
+                </td>
+                <td class="col-3">
+                    <input type="text" id=${episode} name=${episode} class="form-control" value=${len}>
+                </td>
+            </tr>
+        `
+        $("#video-donload-table > tbody").append(tr);
+    }
+</script>
+
+{% endblock %}

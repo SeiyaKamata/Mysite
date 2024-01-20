@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th>曲名</th>
+            <th>ジャンル</th>
+            <th>アーティスト</th>
+            <th>動画</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for song in songs %}
+          <tr>
+            <td>{{ song.name }}</td>
+            <td>{{ song.genre }}</td>
+            <td>{{ song.artist }}</td>
+            <td>
+              <iframe width="150" height="75" src="{{ song.url }}" frameborder="0" allowfullscreen></iframe>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

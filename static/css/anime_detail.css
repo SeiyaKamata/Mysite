@@ -1,0 +1,16 @@
+.anime-card:hover,
+.song-card:hover,
+.japan-card:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.anime-card,
+.song-card,
+.japan-card {
+    color: #007bff;
+}
+
+a {
+    text-decoration: none;
+}

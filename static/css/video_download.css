@@ -1,0 +1,8 @@
+#video-donload-table tr td#add-tr-button:hover {
+    background-color: #eee;
+}
+
+
+#video-donload-table th {
+    vertical-align: middle;
+}
