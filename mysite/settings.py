@@ -10,7 +10,7 @@ SECRET_KEY = 'jwes)xg+rt-csiebi%(k7ehd%lmx0@u2ii_n)ov18c^11ip7hx'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.home']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
