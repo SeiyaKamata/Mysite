@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', lambda request: redirect('anime/', permanent=False)),
     path('japan/', include('japan.urls')),
     path('anime/', include('anime.urls')),
     path('song/', include('song.urls')),
