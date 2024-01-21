@@ -2,6 +2,11 @@
     python3 manage.py makemigrations
     python3 manage.py migrate
 
+### Mac
+    brew install ffmpeg
+### linux (ubuntu)
+    apt-get install ffmpeg
+
 ## サーバー起動
     gunicorn mysite.asgi:application -w 4 -k uvicorn.workers.UvicornWorker -t 120
 
