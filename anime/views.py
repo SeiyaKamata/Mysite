@@ -17,6 +17,13 @@ from video.db import (
     get_videos_by_anime,
 )
 
+
+def custom_sort(period):
+    year = period.year
+    season = period.season
+    season_order = {"冬": 1, "春": 2, "夏": 3, "秋": 4}
+    return (year, season_order.get(season, 5))
+
 def anime_comment_add_api(request):
     anime = request.POST.get('anime', 0)
     comment  = request.POST.get('comment', '')
@@ -49,10 +56,11 @@ def anime_list_view(request):
 
     anime_list = get_animes_by_period_genre(period, genre)
 
+
     context = {
         'anime_list': anime_list,
-        'genre': Genre.objects.all(),
-        'period': Period.objects.all(),
+        'genre': Period.objects.all(),
+        'period': sorted(Period.objects.all(), key=custom_sort),
         'selected_genre': genre,
         'selected_period': period,
     }
