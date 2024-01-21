@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<input id="video-id" type="text" value="{{video.id}}" hidden>
+<input id="video-id" type="text" value="{{video_id}}" hidden>
 <video id="my-video" class="video-js" controls data-setup="{}" playsinline>
     <source src={{video}} />
 </video>

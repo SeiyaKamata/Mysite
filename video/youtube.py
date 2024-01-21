@@ -113,10 +113,9 @@ def download(id, option):
 
 def download_anime(video_id, episode, anime_id):
     file_format = "webm"
-    upload_to = os.path.join(settings.MEDIA_ROOT, 'videos', str(anime_id))
     anime = Anime.objects.get(id=anime_id)
     file_name = f'{anime}_{episode}.{file_format}'
-    path = os.path.join(upload_to, file_name)
+    path = os.path.join('videos', anime_id, file_name)
     option = get_option(file_format, path)
 
     download(video_id, option)

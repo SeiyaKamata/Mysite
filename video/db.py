@@ -23,7 +23,7 @@ def add_comment(video, comment):
     try:
         with transaction.atomic():
             c = Comment(
-                anime = Video.objects.get(id=video),
+                video   = Video.objects.get(id=video),
                 comment = comment,
             )
             c.save()

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.http import JsonResponse
 
 import asyncio
 import time
@@ -27,7 +28,7 @@ async def video_download_view(request):
 
 
 def video_add_comment_api(request):
-    video = request.POST.get('video', 0)
+    video    = request.POST.get('video', 0)
     comment  = request.POST.get('comment', '')
 
     c = add_comment(video, comment)
@@ -55,6 +56,7 @@ def video_watch_view(request):
     videos = Video.objects.filter(anime__id=anime_id)
     
     context = {
+        'video_id': videos.get(episode=episode).id,
         'video':    videos.get(episode=episode).video_file.url,
         'previous': videos.get(episode=episode).video_file.url,
         'next':     videos.get(episode=episode).video_file.url,
