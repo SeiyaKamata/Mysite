@@ -10,7 +10,8 @@ SECRET_KEY = 'jwes)xg+rt-csiebi%(k7ehd%lmx0@u2ii_n)ov18c^11ip7hx'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.home', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://mysite.home']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
