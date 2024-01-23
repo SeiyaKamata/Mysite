@@ -59,7 +59,7 @@ def anime_list_view(request):
 
     context = {
         'anime_list': anime_list,
-        'genre': Period.objects.all(),
+        'genre': Genre.objects.all(),
         'period': sorted(Period.objects.all(), key=custom_sort),
         'selected_genre': genre,
         'selected_period': period,
