@@ -6,10 +6,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-end mb-3">
-  <a href="add" type="button" class="btn btn-primary">追加</a>
-</div>
-
 <div class="mb-5">
 
   <div class="accordion" id="anime-filter">
@@ -32,7 +28,7 @@
               {{ p }}
             </label>
           </div>
-          {%  else %}
+          {% else %}
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" value="{{p.id}}" id="period-{{p.id}}" name="period">
             <label class="form-check-label" for="period-{{p.id}}">
@@ -84,6 +80,13 @@
     </a>
   </div>
   {% endfor %}
+  <div class="image-box">
+    <a href="add">
+      <div class="image-container">
+        <img src="{% static 'plus.png' %}">
+      </div>
+    </a>
+  </div>
 </div>
 {% endblock %}
 
