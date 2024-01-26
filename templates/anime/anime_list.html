@@ -9,32 +9,69 @@
 <div class="d-flex justify-content-end mb-3">
   <a href="add" type="button" class="btn btn-primary">追加</a>
 </div>
-<div class="d-flex justify-content-end mb-5">
-  <div class="col-3">
-    <select id="periodSelect" class="form-select" aria-label="Default select example">
-      <option selected value="">Period</option>
-      {% for p in period %}
-      {% if p.id == selected_period %}
-      <option value="{{ p.id }}" selected>{{ p }}</option>
-      {% else %}
-      <option value="{{ p.id }}">{{ p }}</option>
-      {% endif %}
-      {% endfor %}
-    </select>
+
+<div class="mb-5">
+
+  <div class="accordion" id="anime-filter">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+          aria-expanded="true" aria-controls="collapseOne">
+          絞り込み
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#anime-filter">
+        <div class="accordion-body">
+
+          <p class="h4">放送時期</p>
+          {% for p in period %}
+          {% if p.id in selected_period %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="{{p.id}}" id="period-{{p.id}}" name="period" checked>
+            <label class="form-check-label" for="period-{{p.id}}">
+              {{ p }}
+            </label>
+          </div>
+          {%  else %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="{{p.id}}" id="period-{{p.id}}" name="period">
+            <label class="form-check-label" for="period-{{p.id}}">
+              {{ p }}
+            </label>
+          </div>
+          {% endif %}
+          {% endfor %}
+
+          <p class="h4 mt-3">ジャンル</p>
+          {% for g in genre %}
+          {% if g.id in selected_genre %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="{{g.id}}" id="genre-{{g.id}}" name="genre" checked>
+            <label class="form-check-label" for="genre-{{g.id}}">
+              {{ g }}
+            </label>
+          </div>
+          {% else %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="{{g.id}}" id="genre-{{g.id}}" name="genre">
+            <label class="form-check-label" for="genre-{{g.id}}">
+              {{ g }}
+            </label>
+          </div>
+          {% endif %}
+          {% endfor %}
+
+
+          <div class="d-flex justify-content-end mt-3">
+            <button id="filter-btn" type="button" class="btn btn-primary">絞り込み</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="col-3">
-    <select id="genreSelect" class="form-select" aria-label="Default select example">
-      <option selected value="">Genre</option>
-      {% for g in genre %}
-      {% if g.id == selected_genre %}
-      <option value="{{ g.id }}" selected>{{ g }}</option>
-      {% else %}
-      <option value="{{ g.id }}">{{ g }}</option>
-      {% endif %}
-      {% endfor %}
-    </select>
-  </div>
+
 </div>
 
 <div id="anime-list" class="d-flex flex-wrap justify-content-between">
@@ -54,46 +91,23 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-
   $(document).ready(function () {
-    $('#genreSelect, #periodSelect').change(function () {
-      filterAnime();
+    $('#filter-btn').click(function () {
+
+      const periodCheckboxes = document.querySelectorAll('input[name="period"]:checked');
+      let periodParams = "";
+      periodCheckboxes.forEach(function (checkbox) {
+        periodParams += "p[]=" + checkbox.value + "&";
+      });
+
+      const genreCheckboxes = document.querySelectorAll('input[name="genre"]:checked');
+      let genreParams = "";
+      genreCheckboxes.forEach(function (checkbox) {
+        genreParams += "g[]=" + checkbox.value + "&";
+      });
+
+      window.location.href = 'http://127.0.0.1:8000/anime?' + periodParams + genreParams;
     });
-
-    function filterAnime() {
-      var selectedGenre = $('#genreSelect').val();
-      var selectedPeriod = $('#periodSelect').val();
-
-      $.ajax({
-        url: 'anime_list_api/',
-        method: 'GET',
-        data: { genre: selectedGenre, period: selectedPeriod },
-        success: function (data) {
-          updateAnimeList(data.anime_list);
-        },
-        error: function (error) {
-          console.error('Error:', error);
-        }
-      });
-    }
-
-    function updateAnimeList(animeList) {
-      $('#anime-list').empty();
-
-      animeList.forEach(function (anime) {
-        var cardHtml = `
-          <div class="image-box">
-            <a href="detail?id=${anime.id}">
-              <div class="image-container">
-                <img src="${anime.image}" alt="Your Image">
-              </div>
-            </a>
-          </div>
-        `;
-
-        $('#anime-list').append(cardHtml);
-      });
-    }
   });
 </script>
 {% endblock %}

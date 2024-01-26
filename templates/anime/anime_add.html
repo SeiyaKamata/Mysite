@@ -23,7 +23,7 @@
         <tr>
             <th>放送時期</th>
             <td>
-                <select class="form-select" id="period" name="period" multiple>
+                <select class="form-select" id="period" name="period" size="5" multiple>
                     {% for p in period %}
                     <option value="{{ p.id }}">{{ p }}</option>
                     {% endfor %}

@@ -7,6 +7,5 @@ urlpatterns = [
     path('', views.anime_list_view, name='list'),
     path('add/', views.anime_add_view, name='add'),
     path('detail/', views.anime_detail_view, name='detail'),
-    path('anime_list_api/', views.anime_list_api, name='anime_list_api'),
     path('add_comment_api/', views.anime_comment_add_api, name='add_comment'),
 ]

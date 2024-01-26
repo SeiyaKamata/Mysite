@@ -33,29 +33,20 @@ def anime_comment_add_api(request):
     return JsonResponse({'new_comment': c.comment})
 
 
-def anime_list_api(request):
-    period = request.GET.get('period', None)
-    genre = request.GET.get('genre', None)
-
-    animes = get_animes_by_period_genre(period, genre)
-
-    return JsonResponse({'anime_list': animes})
-
 def anime_list_view(request):
-    genre = request.GET.get('genre', None)
-    period = request.GET.get('period', None)
+    genre = request.GET.getlist('g[]')
+    period = request.GET.getlist('p[]')
 
-    if genre is None and period is None:
-        period = 1
+    if not genre and not period:
+        period = ['1',]
 
-    if genre is not None:
-        genre = int(genre)
+    if genre:
+        genre = [int(g) for g in genre]
 
-    if period is not None:
-        period = int(period)
+    if period:
+        period = [int(p) for p in period]
 
     anime_list = get_animes_by_period_genre(period, genre)
-
 
     context = {
         'anime_list': anime_list,
@@ -100,7 +91,7 @@ def anime_add_view(request):
     else:
         context = {
             'genre': Genre.objects.all(),
-            'period': Period.objects.all(),
+            'period': sorted(Period.objects.all(), key=custom_sort),
             'company': Company.objects.all(),
         }
 

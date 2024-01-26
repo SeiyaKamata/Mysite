@@ -111,10 +111,10 @@ def get_animes_by_period_genre(period, genre):
     filtered_animes = Anime.objects.all()
 
     if genre:
-        filtered_animes = filtered_animes.filter(genre__id=genre)
+        filtered_animes = filtered_animes.filter(genre__id__in=genre)
 
     if period:
-        filtered_animes = filtered_animes.filter(period__id=period)
+        filtered_animes = filtered_animes.filter(period__id__in=period)
 
     serialized_data = [{'id': anime.id, 'name': anime.name, 'image': anime.image.url} for anime in filtered_animes]
 
