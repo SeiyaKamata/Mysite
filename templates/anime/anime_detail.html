@@ -25,7 +25,7 @@
             <th scope="row">ジャンル</th>
             <td>
                 {% for g in genre %}
-                <a href="/anime?genre={{g.id}}">{{g}}</a>
+                <a href="/anime?g[]={{g.id}}">{{g}}</a>
                 <span>, </span>
                 {% endfor %}
             </td>
@@ -34,7 +34,7 @@
             <th scope="row">放送シーズン</th>
             <td>
                 {% for p in period %}
-                <a href="/anime?period={{p.id}}">{{p}}</a>
+                <a href="/anime?p[]={{p.id}}">{{p}}</a>
                 <span>, </span>
                 {% endfor %}
             </td>
