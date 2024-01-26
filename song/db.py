@@ -15,3 +15,16 @@ def add_song(name, genre, artist, url):
             return song
     except:
         return None
+
+
+def add_artist(artist_name):
+    try:
+        with transaction.atomic():
+            artist = Artist(
+                name = artist_name,
+            )
+            artist.save()
+
+            return artist
+    except:
+        return None

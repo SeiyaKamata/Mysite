@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from .models import Song, Genre, Artist
 from anime.models import Anime
-from .db import add_song
+from .db import add_song, add_artist
 from anime.db import add_anime_song
 
 def song_list_view(request):
@@ -12,6 +12,7 @@ def song_list_view(request):
     }
 
     return render(request, 'song/song_list.html', context)
+
 
 def song_add_view(request):
     if request.method == 'POST':
@@ -40,4 +41,19 @@ def song_add_view(request):
             'selected_anime': int(selected_anime),
         }
 
-    return render(request, 'song/song_add.html', context)
+        return render(request, 'song/song_add.html', context)
+
+
+def artist_add_view(request):
+    if request.method == 'POST':
+        artist_name = request.POST.get('artist', '')
+
+        artist = add_artist(artist_name)
+
+        if artist is None:
+            return redirect('/song')
+        return redirect('/song')
+
+    else:
+
+        return render(request, 'song/artist_add.html', {})

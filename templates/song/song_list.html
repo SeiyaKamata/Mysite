@@ -13,7 +13,7 @@
             <th>曲名</th>
             <th>ジャンル</th>
             <th>アーティスト</th>
-            <th>動画</th>
+            <th>Youtubeへ</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,9 @@
             <td>{{ song.genre }}</td>
             <td>{{ song.artist }}</td>
             <td>
-              <iframe width="150" height="75" src="{{ song.url }}" frameborder="0" allowfullscreen></iframe>
+              <a href="{{song.url}}" target="_blank">
+                <img src="{% static 'external-link.svg' %}" />
+            </a>
             </td>
           </tr>
         {% endfor %}
