@@ -93,7 +93,6 @@ def add_comment(anime, comment):
     except:
         return None
 
-
 def get_anime_by_id(data_id):
     try:
         anime = Anime.objects.get(id=data_id)
@@ -127,6 +126,18 @@ def get_places_by_anime(anime_id):
 
     except Anime_Place.DoesNotExist:
         return None
+
+
+def get_place_by_prefecture(prefecture):
+    try:
+        places = Anime_Place.objects.filter(place__address__startswith=prefecture)
+        return places
+
+    except Anime.DoesNotExist:
+        return None
+
+
+
 
 def get_songs_by_anime(anime_id):
     try:

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/table.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>名前</th>
+            <th>住所</th>
+            <th>関連アニメ</th>
+            <th>マップへ</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for place in places %}
+        <tr>
+            <td>{{ place.place.name }}</td>
+            <td>{{ place.place.address }}</td>
+            <td>
+                <a href="/anime/detail?id={{place.anime.id}}">
+                    {{place.anime}}
+                </a>
+            </td>
+            <td>
+                <a href="https://www.google.com/maps/search/?api=1&query={{place.place.address}}" target="_blank">
+                    <img src="{% static 'external-link.svg' %}" />
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

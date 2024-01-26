@@ -5,5 +5,6 @@ app_name = 'japan'
 
 urlpatterns = [
     path('', views.JapanView.as_view(), name='index'),
-    path('add', views.place_add_view, name='add'),
+    path('list/', views.place_list_view, name='list'),
+    path('add/', views.place_add_view, name='add'),
 ]

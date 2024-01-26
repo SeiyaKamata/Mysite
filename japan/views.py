@@ -1,13 +1,23 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 
-from anime.models import Anime
+from anime.models import Anime, Anime_Place
 
 from .db import add_place
-from anime.db import add_anime_place
+from anime.db import add_anime_place, get_place_by_prefecture
 
 class JapanView(TemplateView):
     template_name = "japan/japan2.html"
+
+
+def place_list_view(request):
+    prefecture = request.GET.get('prefecture', '')
+
+    context = {
+        'places': get_place_by_prefecture(prefecture),
+    }
+
+    return render(request, 'japan/place_list.html', context)
 
 
 def place_add_view(request):
